@@ -1,0 +1,72 @@
+# Flutter/Dart related
+**/pubspec.lock
+**/pubspec.yaml
+**/build/
+**/.dart_tool/
+**/.packages
+**/flutter_*.png
+**/android/.gradle/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/gradle/
+**/android/settings.gradle
+**/android/local.properties
+**/ios/Pods/
+**/ios/Runner.xcworkspace/
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/App.framework
+**/ios/.generated/
+**/ios/Flutter/App.framework
+**/ios/.xcuserstate
+**/macos/Pods/
+**/macos/Runner.xcworkspace/
+**/macos/Runner/GeneratedPluginRegistrant.*
+**/web/index.html
+**/web/favicon.png
+
+# Build outputs
+build/
+flutter_*.log
+*.apk
+*.ipa
+*.app
+
+# Coverage files
+coverage/
+*.lcov
+
+# IDE specific files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+*.out
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Misc
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.orig
+*.lock
+*.pid
+*.seed
+*.coverage
+*.pdb
