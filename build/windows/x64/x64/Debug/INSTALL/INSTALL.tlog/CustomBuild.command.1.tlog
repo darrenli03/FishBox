@@ -1,0 +1,10 @@
+^C:\USERS\DARRE\VSCODE PROJECTS\FISHBOX\FISHBOXAPP\BUILD\WINDOWS\X64\CMAKEFILES\C6DDA738BAF0315161D52A94226F12A6\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

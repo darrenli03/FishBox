@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\darre\VSCode Projects\FishBox\fishboxapp\build\windows\x64\CMakeFiles\19931df89f2358012c9f6f2143ff00ff\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{90F6FA05-BCCC-3B6D-9856-04314747BB5E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

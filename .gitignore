@@ -1,0 +1,38 @@
+# Flutter/Dart related
+**/build/
+**/.dart_tool/
+**/.packages
+**/flutter_*.log
+
+# iOS specific
+ios/Pods/
+ios/Runner.xcworkspace/
+
+# Android specific
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# Windows specific
+windows/flutter/ephemeral/
+
+# MacOS specific
+macos/Pods/
+macos/Runner.xcworkspace/
+
+# Web specific
+web/index.html
+
+# IDE specific files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Misc
+*.log
+*.tmp
+*.temp
+*.bak

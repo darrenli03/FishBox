@@ -1,0 +1,1 @@
+ C:\\Users\\darre\\VSCode\ Projects\\FishBox\\fishboxapp\\.dart_tool\\flutter_build\\a5db13a17e504b49176e4df1b913b859\\native_assets.yaml: 
