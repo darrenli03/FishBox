@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 import 'widgets/flutter_mjpeg.dart';
+import 'widgets/opendoorbutton.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({
@@ -36,7 +37,16 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
           debugShowCheckedModeBanner: false,
-          home: MjpegStreamPage(settingsController: settingsController), // Pass settingsController
+          home: Scaffold(
+            // appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
+            body: Column(
+              children: [
+                Expanded(child: MjpegStreamPage(settingsController: settingsController)), 
+                OpenDoorButton(), // Add OpenDoorButton widget here
+              ],
+            ),
+            // body: MjpegStreamPage(settingsController: settingsController) // Replace the Column widget with the mjpegStreamPage function
+          ),
         );
       },
     );
