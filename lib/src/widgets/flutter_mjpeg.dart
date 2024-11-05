@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mjpeg/flutter_mjpeg.dart';
 import '../settings/settings_view.dart'; // Import the settings view
 import '../settings/settings_controller.dart';
+import 'telemetry_screen.dart'; 
 
 class MjpegStreamPage extends StatelessWidget {
   const MjpegStreamPage({
@@ -18,8 +19,20 @@ class MjpegStreamPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MJPEG Stream'),
+        title: Text('FishBox Controls'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.assessment),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TelemetryScreen(), // Navigate to TelemetryScreen
+                ),
+              );
+            },
+          ),
+          
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
