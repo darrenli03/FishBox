@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 import 'fish_data.dart';
 
 class TelemetryScreen extends StatefulWidget {
@@ -10,21 +11,41 @@ class TelemetryScreen extends StatefulWidget {
 
 class _TelemetryScreenState extends State<TelemetryScreen> {
   late Future<List<FishData>> futureFishData;
+  Timer? _timer;
+  int mostRecentFishId = 0; // Variable to keep track of the most recent fish
 
   @override
   void initState() {
     super.initState();
-    futureFishData = fetchDummyFishData(); // Use the mock method for testing
+    futureFishData = fetchDummyFishData(); // Initial fetch with dummy data
+    _timer = Timer.periodic(Duration(seconds: 30), (timer) {
+      setState(() {
+        // futureFishData = fetchFishData(mostRecentFishId); // Fetch data every 30 seconds
+        futureFishData = fetchDummyFishData(); // Fetch dummy data every 30 seconds
+      });
+    });
   }
 
-  Future<List<FishData>> fetchFishData() async {
-    final response = await http.get(Uri.parse('http://your-api-url.com/fishdata'));
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
+
+  Future<List<FishData>> fetchFishData(int mostRecentFishId) async {
+    final response = await http.get(Uri.parse('http://your-api-url.com/fishdata?mostRecentFishId=$mostRecentFishId'));
 
     if (response.statusCode == 200) {
       try {
         List jsonResponse = json.decode(response.body);
-        return jsonResponse.map((data) => FishData.fromJson(data)).toList();
+        List<FishData> fishDataList = jsonResponse.map((data) => FishData.fromJson(data)).toList();
+        if (fishDataList.isNotEmpty) {
+          mostRecentFishId = fishDataList.last.id; // Update the most recent fish ID
+        }
+        return fishDataList;
       } catch (e) {
+        print('Failed to parse JSON: $e');
+        print('Response body: ${response.body}');
         throw Exception('Failed to parse JSON: $e');
       }
     } else {
@@ -37,9 +58,9 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
   Future<List<FishData>> fetchDummyFishData() async {
     await Future.delayed(Duration(seconds: 1)); // Simulate network delay
     return [
-      FishData(name: 'Fish 1', imageUrl: 'https://example.com/fish1.jpg', estimatedLength: 10.5),
-      FishData(name: 'Fish 2', imageUrl: 'https://example.com/fish2.jpg', estimatedLength: 12.3),
-      FishData(name: 'Fish 3', imageUrl: 'https://example.com/fish3.jpg', estimatedLength: 8.7),
+      FishData(id: 1, name: 'Fish 1', imageUrl: 'https://example.com/fish1.jpg', estimatedLength: 10.5),
+      FishData(id: 2, name: 'Fish 2', imageUrl: 'https://example.com/fish2.jpg', estimatedLength: 12.3),
+      FishData(id: 3, name: 'Fish 3', imageUrl: 'https://example.com/fish3.jpg', estimatedLength: 8.7),
     ];
   }
 
