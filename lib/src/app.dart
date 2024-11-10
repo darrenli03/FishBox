@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'settings/settings_controller.dart';
 // import 'settings/settings_view.dart';
 import 'widgets/flutter_mjpeg.dart';
-import 'widgets/opendoorbutton.dart';
+import 'widgets/controlconsole.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
             body: Column(
               children: [
                 Expanded(child: MjpegStreamPage(settingsController: settingsController)), 
-                OpenDoorButton(), // Add OpenDoorButton widget here
+                BoxState(), // Add OpenDoorButton widget here
               ],
             ),
             // body: MjpegStreamPage(settingsController: settingsController) // Replace the Column widget with the mjpegStreamPage function

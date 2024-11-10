@@ -47,8 +47,6 @@ class _ComponentDecorationState extends State<ComponentDecoration> {
             ConstrainedBox(
               constraints:
                   const BoxConstraints.tightFor(width: widthConstraint),
-              // Tapping within the a component card should request focus
-              // for that component's children.
               child: Focus(
                 focusNode: focusNode,
                 canRequestFocus: true,
@@ -83,34 +81,69 @@ class _ComponentDecorationState extends State<ComponentDecoration> {
   }
 }
 
+class BoxState extends StatefulWidget {
+  @override
+  _BoxCurrentState createState() => _BoxCurrentState();
+}
 
-// Button Widget
-class OpenDoorButton extends StatelessWidget {
-  // Function to make the POST request
-  Future<void> makePostRequest() async {
-    // Define the URL and body data
-    final url = Uri.parse("https://example.com/api/data");
-    final body = jsonEncode({
-      "key1": "value1",
-      "key2": "value2",
-    });
+class _BoxCurrentState extends State<BoxState> {
+  bool isPumpOn = false; // Track pump state
+  bool isDoorOpen = false; // Track door state
+  String errorMessage = ''; // Track error message
+
+  // Function to toggle pump state with a PUT request
+  Future<void> togglePumpState() async {
+    final url = Uri.parse("https://example.com/api/pump");
+    final newState = isPumpOn ? "off" : "on";
+    final body = jsonEncode({"state": newState});
 
     try {
-      // Make the POST request
-      final response = await http.post(
-        url,
-        headers: {"Content-Type": "application/json"},
-        body: body,
-      );
+      final response = await http.put(url, body: body, headers: {
+        'Content-Type': 'application/json',
+      });
 
-      // Check the response status
       if (response.statusCode == 200) {
-        print("Success: ${response.body}");
+        setState(() {
+          isPumpOn = !isPumpOn;
+          errorMessage = ''; // Clear error message on success
+        });
       } else {
-        print("Failed: ${response.statusCode}");
+        setState(() {
+          errorMessage = 'Failed to update pump state: ${response.reasonPhrase}';
+        });
       }
     } catch (e) {
-      print("Error: $e");
+      setState(() {
+        errorMessage = 'Failed to update pump state: $e';
+      });
+    }
+  }
+
+  // Function to toggle door state with a PUT request
+  Future<void> toggleDoorState() async {
+    final url = Uri.parse("https://example.com/api/door");
+    final newState = isDoorOpen ? "closed" : "open";
+    final body = jsonEncode({"state": newState});
+
+    try {
+      final response = await http.put(url, body: body, headers: {
+        'Content-Type': 'application/json',
+      });
+
+      if (response.statusCode == 200) {
+        setState(() {
+          isDoorOpen = !isDoorOpen;
+          errorMessage = ''; // Clear error message on success
+        });
+      } else {
+        setState(() {
+          errorMessage = 'Failed to update door state: ${response.reasonPhrase}';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Failed to update door state: $e';
+      });
     }
   }
 
@@ -118,51 +151,44 @@ class OpenDoorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ComponentDecoration(
       label: 'Controls',
-      tooltipMessage:
-          'Use these to control the FishBox door and pumps',
+      tooltipMessage: 'Use these to control the FishBox door and pumps',
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         runSpacing: smallSpacing,
         spacing: 128.0,
         children: [
-          // FloatingActionButton.small(
-          //   onPressed: () {},
-          //   tooltip: 'Small',
-          //   child: const Icon(Icons.add),
-          // ),
-          // FloatingActionButton.extended(
-          //   onPressed: () {},
-          //   tooltip: 'Extended',
-          //   icon: const Icon(Icons.add),
-          //   label: const Text('Create'),
-          // ),
-          // FloatingActionButton(
-          //   onPressed: () {},
-          //   tooltip: 'Standard',
-          //   child: const Icon(Icons.add),
-          // ),
+          if (errorMessage.isNotEmpty)
+            Container(
+              width: widthConstraint,
+              padding: const EdgeInsets.all(8.0),
+              color: Colors.redAccent,
+              child: Text(
+                errorMessage,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           Column(
             children: [
-              Text('Open Door'), // Text above the button
-              const SizedBox(height: 4), // Space between text and button
+              const SizedBox(height: 4),
               Tooltip(
-                message: 'Open FishBoxDoor',
-                child: FloatingActionButton.large(
-                  onPressed: makePostRequest,
-                  child: const Icon(Icons.door_sliding),
+                message: isDoorOpen ? 'Close Door' : 'Open Door',
+                child: SwitchListTile(
+                  title: Text(isDoorOpen ? "Door Open" : "Door Closed"),
+                  value: isDoorOpen,
+                  onChanged: (value) => toggleDoorState(),
                 ),
               ),
             ],
           ),
           Column(
             children: [
-              Text('Activate Pumps'), // Text above the button
-              const SizedBox(height: 4), // Space between text and button
+              const SizedBox(height: 4),
               Tooltip(
-                message: 'Activate Pumps',
-                child: FloatingActionButton.large(
-                  onPressed: makePostRequest,
-                  child: const Icon(Icons.water),
+                message: isPumpOn ? 'Turn off Pump' : 'Turn on Pump',
+                child: SwitchListTile(
+                  title: Text(isPumpOn ? "Pump On" : "Pump Off"),
+                  value: isPumpOn,
+                  onChanged: (value) => togglePumpState(),
                 ),
               ),
             ],
@@ -172,4 +198,3 @@ class OpenDoorButton extends StatelessWidget {
     );
   }
 }
-
