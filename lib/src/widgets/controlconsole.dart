@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async'; // Import the dart:async package for Timer
 
 const double widthConstraint = 450;
 const smallSpacing = 10.0;
@@ -90,6 +91,23 @@ class _BoxCurrentState extends State<BoxState> {
   bool isPumpOn = false; // Track pump state
   bool isDoorOpen = false; // Track door state
   String errorMessage = ''; // Track error message
+  double errorMessageOpacity = 0.0;
+  Timer? _errorTimer;
+
+  // Function to clear the error message after 5 seconds
+  void clearErrorMessage() {
+    _errorTimer?.cancel(); // Cancel any existing timer
+    _errorTimer = Timer(Duration(seconds: 5), () {
+      setState(() {
+        errorMessageOpacity = 0.0;
+      });
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {
+          errorMessage = '';
+        });
+      });
+    });
+  }
 
   // Function to toggle pump state with a PUT request
   Future<void> togglePumpState() async {
@@ -106,16 +124,21 @@ class _BoxCurrentState extends State<BoxState> {
         setState(() {
           isPumpOn = !isPumpOn;
           errorMessage = ''; // Clear error message on success
+          errorMessageOpacity = 0.0;
         });
       } else {
         setState(() {
           errorMessage = 'Failed to update pump state: ${response.reasonPhrase}';
+          errorMessageOpacity = 1.0;
         });
+        clearErrorMessage(); // Clear the error message after 5 seconds
       }
     } catch (e) {
       setState(() {
         errorMessage = 'Failed to update pump state: $e';
+        errorMessageOpacity = 1.0;
       });
+      clearErrorMessage(); // Clear the error message after 5 seconds
     }
   }
 
@@ -134,16 +157,21 @@ class _BoxCurrentState extends State<BoxState> {
         setState(() {
           isDoorOpen = !isDoorOpen;
           errorMessage = ''; // Clear error message on success
+          errorMessageOpacity = 0.0;
         });
       } else {
         setState(() {
           errorMessage = 'Failed to update door state: ${response.reasonPhrase}';
+          errorMessageOpacity = 1.0;
         });
+        clearErrorMessage(); // Clear the error message after 5 seconds
       }
     } catch (e) {
       setState(() {
         errorMessage = 'Failed to update door state: $e';
+        errorMessageOpacity = 1.0;
       });
+      clearErrorMessage(); // Clear the error message after 5 seconds
     }
   }
 
@@ -157,8 +185,10 @@ class _BoxCurrentState extends State<BoxState> {
         runSpacing: smallSpacing,
         spacing: 128.0,
         children: [
-          if (errorMessage.isNotEmpty)
-            Container(
+          AnimatedOpacity(
+            opacity: errorMessageOpacity,
+            duration: Duration(milliseconds: 500),
+            child: Container(
               width: widthConstraint,
               padding: const EdgeInsets.all(8.0),
               color: Colors.redAccent,
@@ -167,6 +197,7 @@ class _BoxCurrentState extends State<BoxState> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+          ),
           Column(
             children: [
               const SizedBox(height: 4),

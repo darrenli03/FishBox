@@ -66,36 +66,82 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Telemetry Screen'),
       ),
-      body: FutureBuilder<List<FishData>>(
-        future: futureFishData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data available'));
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                FishData fish = snapshot.data![index];
-                return ListTile(
-                  leading: Hero(
-                    tag: 'fishImage_${fish.name}', // Ensure unique tag
-                    child: Image.network(fish.imageUrl),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Pump Metrics',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      // Add pump metrics UI here
+                      Text('Pump Status: On'),
+                      Text('Flow Rate: 10 L/min'),
+                    ],
                   ),
-                  title: Text(fish.name),
-                  subtitle: Text('Estimated Length: ${fish.estimatedLength} cm'),
-                );
-              },
-            );
-          }
-        },
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Previous Fish Caught',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      FutureBuilder<List<FishData>>(
+                        future: futureFishData,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text('Error: ${snapshot.error}'));
+                          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return Center(child: Text('No data available'));
+                          } else {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                FishData fish = snapshot.data![index];
+                                return ListTile(
+                                  leading: Hero(
+                                    tag: 'fishImage_${fish.name}', // Ensure unique tag
+                                    child: Image.network(fish.imageUrl),
+                                  ),
+                                  title: Text(fish.name),
+                                  subtitle: Text('Estimated Length: ${fish.estimatedLength} cm'),
+                                );
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
