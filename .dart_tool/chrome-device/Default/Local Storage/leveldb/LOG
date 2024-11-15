@@ -1,5 +1,13 @@
-2024/10/22-16:06:37.512 5948 Reusing MANIFEST C:\Users\darre\AppData\Local\Temp\flutter_tools.3dfd3580\flutter_tools_chrome_device.8a6b4633\Default\Local Storage\leveldb/MANIFEST-000001
-2024/10/22-16:06:37.515 5948 Recovering log #7
-2024/10/22-16:06:37.516 5948 Reusing old log C:\Users\darre\AppData\Local\Temp\flutter_tools.3dfd3580\flutter_tools_chrome_device.8a6b4633\Default\Local Storage\leveldb/000007.log 
-2024/10/22-16:06:37.518 5948 Delete type=0 #3
-2024/10/22-16:06:37.518 5948 Delete type=0 #4
+2024/11/10-14:51:28.387 7258 Reusing MANIFEST C:\Users\darre\AppData\Local\Temp\flutter_tools.5f58670d\flutter_tools_chrome_device.bc0ffe56\Default\Local Storage\leveldb/MANIFEST-000001
+2024/11/10-14:51:28.405 7258 Recovering log #3
+2024/11/10-14:51:28.406 7258 Level-0 table #3: started
+2024/11/10-14:51:28.423 7258 Level-0 table #3: 242 bytes OK
+2024/11/10-14:51:28.427 7258 Recovering log #4
+2024/11/10-14:51:28.427 7258 Level-0 table #4: started
+2024/11/10-14:51:28.434 7258 Level-0 table #4: 370 bytes OK
+2024/11/10-14:51:28.435 7258 Recovering log #7
+2024/11/10-14:51:28.443 7258 Reusing old log C:\Users\darre\AppData\Local\Temp\flutter_tools.5f58670d\flutter_tools_chrome_device.bc0ffe56\Default\Local Storage\leveldb/000007.log 
+2024/11/10-14:51:28.445 7258 Delete type=0 #3
+2024/11/10-14:51:28.446 7258 Delete type=0 #4
+2024/11/10-14:51:28.446 7258 Delete type=2 #5
+2024/11/10-14:51:28.447 7258 Delete type=2 #8

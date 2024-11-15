@@ -5,6 +5,7 @@ C:/Users/darre/VSCode Projects/FishBox/fishboxapp/build/windows/x64/runner/Debug
 C:/Users/darre/VSCode Projects/FishBox/fishboxapp/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.json
 C:/Users/darre/VSCode Projects/FishBox/fishboxapp/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/2.0x/flutter_logo.png
 C:/Users/darre/VSCode Projects/FishBox/fishboxapp/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/3.0x/flutter_logo.png
+C:/Users/darre/VSCode Projects/FishBox/fishboxapp/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/fish.jpg
 C:/Users/darre/VSCode Projects/FishBox/fishboxapp/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/flutter_logo.png
 C:/Users/darre/VSCode Projects/FishBox/fishboxapp/build/windows/x64/runner/Debug/data/flutter_assets/FontManifest.json
 C:/Users/darre/VSCode Projects/FishBox/fishboxapp/build/windows/x64/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf

@@ -13,7 +13,7 @@ class MjpegStreamPage extends StatelessWidget {
 
   final SettingsController settingsController;
 
-  final String streamUrl = 'http://localhost:8000/stream.mjpg';
+  final String streamUrl = 'http://10.42.0.1:8000/stream.mjpg';
 
   @override
   Widget build(BuildContext context) {
