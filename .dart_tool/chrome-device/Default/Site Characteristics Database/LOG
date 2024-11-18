@@ -1,13 +1,7 @@
-2024/11/10-14:51:28.203 6a30 Reusing MANIFEST C:\Users\darre\AppData\Local\Temp\flutter_tools.5f58670d\flutter_tools_chrome_device.bc0ffe56\Default\Site Characteristics Database/MANIFEST-000001
-2024/11/10-14:51:28.206 6a30 Recovering log #3
-2024/11/10-14:51:28.207 6a30 Level-0 table #13: started
-2024/11/10-14:51:28.210 6a30 Level-0 table #13: 329 bytes OK
-2024/11/10-14:51:28.211 6a30 Recovering log #6
-2024/11/10-14:51:28.211 6a30 Level-0 table #14: started
-2024/11/10-14:51:28.213 6a30 Level-0 table #14: 417 bytes OK
-2024/11/10-14:51:28.214 6a30 Recovering log #10
-2024/11/10-14:51:28.215 6a30 Reusing old log C:\Users\darre\AppData\Local\Temp\flutter_tools.5f58670d\flutter_tools_chrome_device.bc0ffe56\Default\Site Characteristics Database/000010.log 
-2024/11/10-14:51:28.218 6a30 Delete type=0 #3
-2024/11/10-14:51:28.218 6a30 Delete type=2 #4
-2024/11/10-14:51:28.219 6a30 Delete type=2 #6
-2024/11/10-14:51:28.219 6a30 Delete type=0 #6
+2024/11/17-13:00:23.616 cb18 Reusing MANIFEST C:\Users\darre\AppData\Local\Temp\flutter_tools.14cc0b8a\flutter_tools_chrome_device.f2451438\Default\Site Characteristics Database/MANIFEST-000001
+2024/11/17-13:00:23.619 cb18 Recovering log #10
+2024/11/17-13:00:23.620 cb18 Reusing old log C:\Users\darre\AppData\Local\Temp\flutter_tools.14cc0b8a\flutter_tools_chrome_device.f2451438\Default\Site Characteristics Database/000010.log 
+2024/11/17-13:00:23.621 cb18 Delete type=0 #3
+2024/11/17-13:00:23.621 cb18 Delete type=2 #4
+2024/11/17-13:00:23.621 cb18 Delete type=2 #6
+2024/11/17-13:00:23.621 cb18 Delete type=0 #6

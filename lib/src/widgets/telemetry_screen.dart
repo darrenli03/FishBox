@@ -11,35 +11,41 @@ class TelemetryScreen extends StatefulWidget {
   _TelemetryScreenState createState() => _TelemetryScreenState();
 }
 
+
 class _TelemetryScreenState extends State<TelemetryScreen> {
   List<FishData> fishDataList = [];
-  PumpMetrics pumpMetrics = PumpMetrics(status: 'Unknown', flowRate: 0.0);
+  // PumpMetrics pumpMetrics = PumpMetrics(status: 'Unknown', flowRate: 0.0);
   Timer? _timer;
-  int mostRecentFishId = 1; // Variable to keep track of the most recent fish
-
+  int mostRecentFishId = 0; // Variable to keep track of the most recent fish
+  bool isPumpOn = false;
+  double pumpSpeed = 0;
+  
   @override
   void initState() {
     bool dummyCheck = false;
+    
     super.initState();
-    fetchDummyPumpMetrics(); // Fetch dummy pump metrics
+    // fetchDummyPumpMetrics(); // Fetch dummy pump metrics
+    fetchPumpMetrics();
     // fetchDummyFishData(); // Fetch dummy fish data
     fetchFishData(mostRecentFishId); // Fetch fish data
     setState(() {
-      fishDataList.add(
-        FishData(
-          id: 1,
-          timestamp: '2024-06-59T22:16:18Z',
-          imageUrl: 'assets/images/fish.jpg', // Local image path
-          estimatedLength: 9.5,
-        ),
-      );
+      // fishDataList.add(
+      //   FishData(
+      //     id: 1,
+      //     timestamp: '2024-06-59T22:16:18Z',
+      //     imageUrl: 'assets/images/fish.jpg', // Local image path
+      //     estimatedLength: 9.5,
+      //   ),
+      // );
     });
 
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      fetchDummyPumpMetrics(); // Fetch dummy pump metrics every 30 seconds
-      fetchDummyFishData(dummyCheck); // Fetch dummy fish data every 30 seconds
+      // fetchDummyPumpMetrics(); // Fetch dummy pump metrics every 30 seconds
+      fetchPumpMetrics();
+      // fetchDummyFishData(dummyCheck); // Fetch dummy fish data every 30 seconds
       dummyCheck = true;
-      // fetchFishData(mostRecentFishId); // Fetch fish data every 30 seconds
+      fetchFishData(mostRecentFishId); // Fetch fish data every 30 seconds
     });
   }
 
@@ -49,13 +55,37 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     super.dispose();
   }
 
-  Future<void> fetchDummyPumpMetrics() async {
-    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
-    setState(() {
-      pumpMetrics = PumpMetrics(status: 'Running', flowRate: 15.0);
-    });
-  }
+  // Future<void> fetchDummyPumpMetrics() async {
+  //   await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+  //   setState(() {
+  //     pumpMetrics = PumpMetrics(status: 'Running', flowRate: 15.0);
+  //   });
+  // }
 
+  Future<void> fetchPumpMetrics() async {
+  try {
+    final response = await http.get(Uri.parse('http://10.42.0.1:8000/get_status'));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      bool isOpened = jsonResponse['isOpened'];
+      String overrideState = jsonResponse['overrideState'];
+
+      print('Door is ${isOpened ? "Open" : "Closed"}');
+      print('Override State: $overrideState');
+
+      setState(() {
+        isPumpOn = isOpened; // Update isPumpOn
+        pumpSpeed = isOpened ? 3.5 : 0.0; // Update flowRate
+      });
+    } else {
+      print('Failed to load pump metrics: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Failed to load pump metrics: $e');
+  }
+}
+  
   Future<void> fetchDummyFishData(bool dummyCheck) async {
     await Future.delayed(Duration(seconds: 1)); // Simulate network delay
     List<FishData> newFishDataList = [];
@@ -73,13 +103,13 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
 
   Future<void> fetchFishData(int mostRecentFishId) async {
     try {
-      final response = await http.get(Uri.parse('http://10.42.0.1:8000/'));
+      final response = await http.get(Uri.parse('http://10.42.0.1:8000/get_pics?last_id=$mostRecentFishId'));
 
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
         List<FishData> newFishDataList = jsonResponse.map((data) => FishData.fromJson(data)).toList();
 
-        // Download and save images locally
+        // add fishdata to storage list
         for (FishData fish in newFishDataList) {
           fishDataList.add(fish);
         } 
@@ -121,8 +151,8 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                         'Pump Metrics',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
-                      Text('Pump Status: ${pumpMetrics.status}'),
-                      Text('Flow Rate: ${pumpMetrics.flowRate} L/min'),
+                      Text('Pump Status: ${isPumpOn ? 'On' : 'Off'}'),
+                      Text('Flow Rate: ${pumpSpeed} L/min'),
                     ],
                   ),
                 ),
