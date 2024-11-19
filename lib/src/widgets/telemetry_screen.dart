@@ -76,7 +76,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
 
       setState(() {
         isPumpOn = isOpened; // Update isPumpOn
-        pumpSpeed = isOpened ? 3.5 : 0.0; // Update flowRate
+        pumpSpeed = isOpened ? 13.3 : 0.0; // Update flowRate
       });
     } else {
       print('Failed to load pump metrics: ${response.statusCode}');
@@ -86,20 +86,20 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
   }
 }
   
-  Future<void> fetchDummyFishData(bool dummyCheck) async {
-    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
-    List<FishData> newFishDataList = [];
-    if (dummyCheck == false) {
-    newFishDataList.add(FishData(id: 2, timestamp: '2015-07-05T22:16:18Z', imageUrl: 'https://example.com/fish2.jpg', estimatedLength: 12.3));
-    newFishDataList.add(FishData(id: 3, timestamp: '2015-07-05T22:16:18Z', imageUrl: 'https://example.com/fish3.jpg', estimatedLength: 8.7));
-    }
-    setState(() {
-    if (newFishDataList.isNotEmpty) {
-      fishDataList.addAll(newFishDataList);
-      mostRecentFishId = newFishDataList.last.id; // Update the most recent fish ID
-    }
-    });
-  }
+  // Future<void> fetchDummyFishData(bool dummyCheck) async {
+  //   await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+  //   List<FishData> newFishDataList = [];
+  //   if (dummyCheck == false) {
+  //   newFishDataList.add(FishData(id: 2, timestamp: '2015-07-05T22:16:18Z', imageUrl: 'https://example.com/fish2.jpg', estimatedLength: 12.3));
+  //   newFishDataList.add(FishData(id: 3, timestamp: '2015-07-05T22:16:18Z', imageUrl: 'https://example.com/fish3.jpg', estimatedLength: 8.7));
+  //   }
+  //   setState(() {
+  //   if (newFishDataList.isNotEmpty) {
+  //     fishDataList.addAll(newFishDataList);
+  //     mostRecentFishId = newFishDataList.last.id; // Update the most recent fish ID
+  //   }
+  //   });
+  // }
 
   Future<void> fetchFishData(int mostRecentFishId) async {
     try {
@@ -152,7 +152,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Text('Pump Status: ${isPumpOn ? 'On' : 'Off'}'),
-                      Text('Flow Rate: ${pumpSpeed} L/min'),
+                      Text('Flow Rate: $pumpSpeed L/min'),
                     ],
                   ),
                 ),
@@ -195,13 +195,13 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                                         fontWeight: FontWeight.bold, 
                                       ),
                                     ),
-                                    const Text('Length Estimate:'),
-                                    Text('${fish.estimatedLength} cm', 
-                                      style: const TextStyle(
-                                        fontSize: 12.0, // Slightly smaller font size
-                                        fontWeight: FontWeight.normal, // Not bolded
-                                      ),
-                                    ),
+                                    // const Text('Length Estimate:'),
+                                    // Text('${fish.estimatedLength} cm', 
+                                      // style: const TextStyle(
+                                      //   fontSize: 12.0, // Slightly smaller font size
+                                      //   fontWeight: FontWeight.normal, // Not bolded
+                                      // ),
+                                    // ),
                                     const Text("Caught on:"),
                                     Text(fish.timestamp, 
                                         style: const TextStyle(

@@ -18,14 +18,14 @@ class PumpMetrics {
 class FishData {
   final String timestamp;
   final String imageUrl;
-  final double estimatedLength;
+  // final double estimatedLength;
   final int id;
 
   FishData({
     required this.id,
     required this.timestamp,
     required this.imageUrl,
-    required this.estimatedLength,
+    // required this.estimatedLength,
   });
 
   factory FishData.fromJson(Map<String, dynamic> json) {
@@ -33,7 +33,7 @@ class FishData {
       id: json['id'],
       timestamp: json['timestamp'],
       imageUrl: json['imageUrl'],
-      estimatedLength: json['estimatedLength'],
+      // estimatedLength: json['estimatedLength'],
     );
   }
 }

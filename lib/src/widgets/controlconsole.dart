@@ -244,7 +244,7 @@ class _BoxCurrentState extends State<BoxState> {
   // Function to disable door override with a get request
   Future<void> disableOverride() async {
     // final url = Uri.parse("http://10.42.0.1:8000/disableOverride");
-    final url = Uri.parse("http://10.146.90.63:8000/disableOverride");
+    final url = Uri.parse("http://10.146.90.63:8000/resetOverride");
     try {
       final response = await http.get(url, headers: {
         'Content-Type': 'application/json',
