@@ -22,7 +22,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
   
   @override
   void initState() {
-    bool dummyCheck = false;
+    // bool dummyCheck = false;
     
     super.initState();
     // fetchDummyPumpMetrics(); // Fetch dummy pump metrics
@@ -38,14 +38,15 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
       //     estimatedLength: 9.5,
       //   ),
       // );
-    });
+    // });
 
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      // fetchDummyPumpMetrics(); // Fetch dummy pump metrics every 30 seconds
-      fetchPumpMetrics();
-      // fetchDummyFishData(dummyCheck); // Fetch dummy fish data every 30 seconds
-      dummyCheck = true;
-      fetchFishData(mostRecentFishId); // Fetch fish data every 30 seconds
+      _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+        // fetchDummyPumpMetrics(); // Fetch dummy pump metrics every 30 seconds
+        fetchPumpMetrics();
+        // fetchDummyFishData(dummyCheck); // Fetch dummy fish data every 30 seconds
+        // dummyCheck = true;
+        fetchFishData(mostRecentFishId); // Fetch fish data every 30 seconds
+      });
     });
   }
 
@@ -103,7 +104,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
 
   Future<void> fetchFishData(int mostRecentFishId) async {
     try {
-      final response = await http.get(Uri.parse('http://10.42.0.1:8000/get_pics?last_id=$mostRecentFishId'));
+      final response = await http.get(Uri.parse('http://10.42.0.1:8000/getPics?n=$mostRecentFishId'));
       // final response = await http.get(Uri.parse('http://10.146.90.63:8000/get_pics?last_id=$mostRecentFishId'));
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);

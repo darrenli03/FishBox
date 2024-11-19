@@ -93,7 +93,22 @@ class _BoxCurrentState extends State<BoxState> {
   String errorMessage = ''; // Track error message
   double errorMessageOpacity = 0.0;
   Timer? _errorTimer;
+  Timer? _timer;
+
   String doorStateMessage = 'Unknown'; // Track door state message
+  
+  @override
+  void initState(){
+    super.initState();
+    fetchDoorState();
+    
+    setState(() {
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      fetchDoorState();
+      });
+      
+    });
+  }
 
   // Function to clear the error message after 5 seconds
   void clearErrorMessage() {
@@ -175,8 +190,8 @@ class _BoxCurrentState extends State<BoxState> {
 
   // Function to override door open state with a get request
   Future<void> overrideDoorOpen() async {
-    // final url = Uri.parse("http://1.42.0.1:8000/overrideOpen");
-    final url = Uri.parse("http://10.146.90.63:8000/overrideOpen");
+    final url = Uri.parse("http://10.42.0.1:8000/overrideOpen");
+    // final url = Uri.parse("http://10.146.90.63:8000/overrideOpen");
 
     try {
       final response = await http.get(url, headers: {
@@ -243,7 +258,7 @@ class _BoxCurrentState extends State<BoxState> {
 
   // Function to disable door override with a get request
   Future<void> disableOverride() async {
-    final url = Uri.parse("http://10.42.0.1:8000/disableOverride");
+    final url = Uri.parse("http://10.42.0.1:8000/resetOverride");
     // final url = Uri.parse("http://10.146.90.63:8000/resetOverride");
     try {
       final response = await http.get(url, headers: {
