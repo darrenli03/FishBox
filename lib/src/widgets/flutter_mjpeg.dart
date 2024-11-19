@@ -13,7 +13,8 @@ class MjpegStreamPage extends StatelessWidget {
 
   final SettingsController settingsController;
 
-  final String streamUrl = 'http://10.42.0.1:8000/stream.mjpg';
+  // final String streamUrl = 'http://10.42.0.1:8000/stream.mjpg';
+  final String streamUrl = 'http://192.168.4.1:8000/stream.mjpg';
   // final String streamUrl = 'http://10.146.90.63:8000/stream.mjpg';
   @override
   Widget build(BuildContext context) {
@@ -21,17 +22,17 @@ class MjpegStreamPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('FishBox Controls'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.assessment),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TelemetryScreen(), // Navigate to TelemetryScreen
-                ),
-              );
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.assessment),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => TelemetryScreen(), // Navigate to TelemetryScreen
+          //       ),
+          //     );
+          //   },
+          // ),
           
           IconButton(
             icon: const Icon(Icons.settings),
