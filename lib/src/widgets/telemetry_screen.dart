@@ -65,7 +65,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
 
   Future<void> fetchPumpMetrics() async {
   try {
-    final response = await http.get(Uri.parse('http://10.42.0.1:8000/get_status'));
+    final response = await http.get(Uri.parse('http://10.194.27.154:8000/get_status'));
     // final response = await http.get(Uri.parse('http://10.146.90.63:8000/get_status'));
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
@@ -104,7 +104,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
 
   Future<void> fetchFishData(int mostRecentFishId) async {
     try {
-      final response = await http.get(Uri.parse('http://10.42.0.1:8000/getPics?n=$mostRecentFishId'));
+      final response = await http.get(Uri.parse('http://10.194.27.154:8000/getPics?n=$mostRecentFishId'));
       // final response = await http.get(Uri.parse('http://10.146.90.63:8000/get_pics?last_id=$mostRecentFishId'));
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
@@ -181,31 +181,31 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                                 Expanded(
                                   child: Hero(
                                     tag: 'fishImage_${fish.timestamp}', // Ensure unique tag
-                                    child: fish.imageUrl.startsWith('assets/')
-                                        ? Image.asset(fish.imageUrl, fit: BoxFit.cover)
-                                        : Image.network(fish.imageUrl, fit: BoxFit.cover),
+                                    child: fish.imageUrl.startsWith('data:image') || fish.imageUrl.length > 100
+                                        ? Image.memory(
+                                            fish.decodedImage,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.network(
+                                            fish.imageUrl,
+                                            fit: BoxFit.cover,
+                                          ),
                                   ),
                                 ),
                                 SizedBox(width: 8.0), // Add some spacing between the image and text
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Fish #${fish.id}",
-                                        style: const TextStyle(
-                                        
-                                        fontWeight: FontWeight.bold, 
+                                    Text(
+                                      "Fish #${fish.id}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    // const Text('Length Estimate:'),
-                                    // Text('${fish.estimatedLength} cm', 
-                                      // style: const TextStyle(
-                                      //   fontSize: 12.0, // Slightly smaller font size
-                                      //   fontWeight: FontWeight.normal, // Not bolded
-                                      // ),
-                                    // ),
                                     const Text("Caught on:"),
-                                    Text(fish.timestamp, 
-                                        style: const TextStyle(
+                                    Text(
+                                      fish.timestamp,
+                                      style: const TextStyle(
                                         fontSize: 12.0, // Slightly smaller font size
                                         fontWeight: FontWeight.normal, // Not bolded
                                       ),
@@ -216,7 +216,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                             ),
                           );
                         },
-                      ),
+                      )
                     ],
                   ),
                 ),

@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:intl/intl.dart';
+import 'dart:convert';
 import 'package:intl/intl.dart';
 
 class PumpMetrics {
@@ -17,17 +21,17 @@ class PumpMetrics {
   }
 }
 
+
+
 class FishData {
   final String timestamp;
-  final String imageUrl;
-  // final double estimatedLength;
+  final String imageUrl; // This will still store the raw Base64 string
   final int id;
 
   FishData({
     required this.id,
     required this.timestamp,
     required this.imageUrl,
-    // required this.estimatedLength,
   });
 
   factory FishData.fromJson(Map<String, dynamic> json) {
@@ -38,8 +42,10 @@ class FishData {
     return FishData(
       id: json['id'],
       timestamp: formattedDate,
-      imageUrl: json['imageUrl'],
-      // estimatedLength: json['estimatedLength'],
+      imageUrl: json['imageUrl'], // Store Base64 as-is for now
     );
   }
+
+  // Decode Base64 to bytes
+  Uint8List get decodedImage => base64Decode(imageUrl);
 }
