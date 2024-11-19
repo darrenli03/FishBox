@@ -28,7 +28,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     // fetchDummyPumpMetrics(); // Fetch dummy pump metrics
     fetchPumpMetrics();
     // fetchDummyFishData(); // Fetch dummy fish data
-    fetchFishData(mostRecentFishId); // Fetch fish data
+    fetchFishData(); // Fetch fish data
     setState(() {
       // fishDataList.add(
       //   FishData(
@@ -40,12 +40,13 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
       // );
     // });
 
-      _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
         // fetchDummyPumpMetrics(); // Fetch dummy pump metrics every 30 seconds
         fetchPumpMetrics();
         // fetchDummyFishData(dummyCheck); // Fetch dummy fish data every 30 seconds
         // dummyCheck = true;
-        fetchFishData(mostRecentFishId); // Fetch fish data every 30 seconds
+        fetchFishData(); 
+        // print(mostRecentFishId);
       });
     });
   }
@@ -69,15 +70,15 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     // final response = await http.get(Uri.parse('http://10.146.90.63:8000/get_status'));
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
-      bool isOpened = jsonResponse['isOpened'];
-      String overrideState = jsonResponse['overrideState'];
+      int isOpened = jsonResponse['pump_state'];
+      // String overrideState = jsonResponse['overrideState'];
 
-      print('Door is ${isOpened ? "Open" : "Closed"}');
-      print('Override State: $overrideState');
+      // print('Door is ${isOpened ? "Open" : "Closed"}');
+      // print('Override State: $overrideState');
 
       setState(() {
-        isPumpOn = isOpened; // Update isPumpOn
-        pumpSpeed = isOpened ? 13.3 : 0.0; // Update flowRate
+        // isPumpOn = isOpened; // Update isPumpOn
+        pumpSpeed = !(isOpened == 0) ? 13.3 : 0.0; // Update flowRate
       });
     } else {
       print('Failed to load pump metrics: ${response.statusCode}');
@@ -102,24 +103,22 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
   //   });
   // }
 
-  Future<void> fetchFishData(int mostRecentFishId) async {
+  Future<void> fetchFishData() async {
     try {
+      // Use the class-level `mostRecentFishId`
       final response = await http.get(Uri.parse('http://10.194.27.154:8000/getPics?n=$mostRecentFishId'));
-      // final response = await http.get(Uri.parse('http://10.146.90.63:8000/get_pics?last_id=$mostRecentFishId'));
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
         List<FishData> newFishDataList = jsonResponse.map((data) => FishData.fromJson(data)).toList();
 
-        // add fishdata to storage list
-        for (FishData fish in newFishDataList) {
-          fishDataList.add(fish);
-        } 
-        setState(() {
-          fishDataList.addAll(newFishDataList);
-          if (newFishDataList.isNotEmpty) {
-            mostRecentFishId = newFishDataList.last.id; // Update the most recent fish ID
-          }
-        });
+        if (newFishDataList.isNotEmpty) {
+          setState(() {
+            // Add only new fish
+            fishDataList.addAll(newFishDataList);
+            // Update the class-level `mostRecentFishId`
+            mostRecentFishId = newFishDataList.last.id + 1;
+          });
+        }
       } else {
         print('Failed to load fish data: ${response.statusCode}');
       }
@@ -127,6 +126,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
       print('Failed to load fish data: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -180,16 +180,11 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                               children: [
                                 Expanded(
                                   child: Hero(
-                                    tag: 'fishImage_${fish.timestamp}', // Ensure unique tag
-                                    child: fish.imageUrl.startsWith('data:image') || fish.imageUrl.length > 100
-                                        ? Image.memory(
-                                            fish.decodedImage,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Image.network(
-                                            fish.imageUrl,
-                                            fit: BoxFit.cover,
-                                          ),
+                                    tag: 'fishImage_${fish.id}', // Ensure unique tag
+                                    child: Image.memory(
+                                      fish.imageBytes, // Display image from Uint8List
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(width: 8.0), // Add some spacing between the image and text
@@ -202,21 +197,16 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const Text("Caught on:"),
-                                    Text(
-                                      fish.timestamp,
-                                      style: const TextStyle(
-                                        fontSize: 12.0, // Slightly smaller font size
-                                        fontWeight: FontWeight.normal, // Not bolded
-                                      ),
-                                    ),
+                                    // const Text("Caught on:"),
+                                    // You can add additional metadata display here if needed
                                   ],
                                 ),
                               ],
                             ),
                           );
                         },
-                      )
+                      ),
+
                     ],
                   ),
                 ),

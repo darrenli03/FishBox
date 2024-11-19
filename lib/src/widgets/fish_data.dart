@@ -1,8 +1,10 @@
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import 'package:intl/intl.dart';
 import 'dart:convert';
-import 'package:intl/intl.dart';
+import 'dart:math' show max;
+
 
 class PumpMetrics {
   final String status;
@@ -21,31 +23,19 @@ class PumpMetrics {
   }
 }
 
-
-
 class FishData {
-  final String timestamp;
-  final String imageUrl; // This will still store the raw Base64 string
   final int id;
+  final Uint8List imageBytes; // Decoded image data
 
   FishData({
     required this.id,
-    required this.timestamp,
-    required this.imageUrl,
+    required this.imageBytes,
   });
 
   factory FishData.fromJson(Map<String, dynamic> json) {
-    // Convert epoch time to human-readable format
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(json['timestamp']);
-    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(date);
-
     return FishData(
       id: json['id'],
-      timestamp: formattedDate,
-      imageUrl: json['imageUrl'], // Store Base64 as-is for now
+      imageBytes: base64Decode(json['image_data']), // Decode Base64 string
     );
   }
-
-  // Decode Base64 to bytes
-  Uint8List get decodedImage => base64Decode(imageUrl);
 }
