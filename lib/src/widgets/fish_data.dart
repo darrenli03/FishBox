@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class PumpMetrics {
   final String status;
   final double flowRate;
@@ -29,9 +31,13 @@ class FishData {
   });
 
   factory FishData.fromJson(Map<String, dynamic> json) {
+    // Convert epoch time to human-readable format
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(json['timestamp']);
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(date);
+
     return FishData(
       id: json['id'],
-      timestamp: json['timestamp'],
+      timestamp: formattedDate,
       imageUrl: json['imageUrl'],
       // estimatedLength: json['estimatedLength'],
     );
