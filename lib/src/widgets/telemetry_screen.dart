@@ -64,8 +64,8 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
 
   Future<void> fetchPumpMetrics() async {
   try {
-    final response = await http.get(Uri.parse('http://10.42.0.1:8000/get_status'));
-
+    // final response = await http.get(Uri.parse('http://10.42.0.1:8000/get_status'));
+    final response = await http.get(Uri.parse('http://10.146.90.63:8000/get_status'));
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       bool isOpened = jsonResponse['isOpened'];
@@ -103,8 +103,8 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
 
   Future<void> fetchFishData(int mostRecentFishId) async {
     try {
-      final response = await http.get(Uri.parse('http://10.42.0.1:8000/get_pics?last_id=$mostRecentFishId'));
-
+      // final response = await http.get(Uri.parse('http://10.42.0.1:8000/get_pics?last_id=$mostRecentFishId'));
+      final response = await http.get(Uri.parse('http://10.146.90.63:8000/get_pics?last_id=$mostRecentFishId'));
       if (response.statusCode == 200) {
         List jsonResponse = json.decode(response.body);
         List<FishData> newFishDataList = jsonResponse.map((data) => FishData.fromJson(data)).toList();

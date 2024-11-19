@@ -148,7 +148,8 @@ class _BoxCurrentState extends State<BoxState> {
   Future<void> fetchDoorState() async {
     try {
       final response =
-          await http.get(Uri.parse('http://10.42.0.1:8000/get_status'));
+          // await http.get(Uri.parse('http://10.42.0.1:8000/get_status'));
+          await http.get(Uri.parse('http://10.146.90.63:8000/get_status'));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
@@ -174,7 +175,8 @@ class _BoxCurrentState extends State<BoxState> {
 
   // Function to override door open state with a get request
   Future<void> overrideDoorOpen() async {
-    final url = Uri.parse("http://10.42.0.1:8000/overrideOpen");
+    // final url = Uri.parse("http://1.42.0.1:8000/overrideOpen");
+    final url = Uri.parse("http://10.146.90.63:8000/overrideOpen");
 
     try {
       final response = await http.get(url, headers: {
@@ -207,7 +209,8 @@ class _BoxCurrentState extends State<BoxState> {
 
   // Function to override door close state with a get request
   Future<void> overrideDoorClose() async {
-    final url = Uri.parse("http://10.42.0.1:8000/overrideClosed");
+    // final url = Uri.parse("http://10.42.0.1:8000/overrideClosed");
+    final url = Uri.parse("http://10.146.90.63:8000/overrideClosed");
 
     try {
       final response = await http.get(url, headers: {
@@ -240,8 +243,8 @@ class _BoxCurrentState extends State<BoxState> {
 
   // Function to disable door override with a get request
   Future<void> disableOverride() async {
-    final url = Uri.parse("http://10.42.0.1:8000/disableOverride");
-
+    // final url = Uri.parse("http://10.42.0.1:8000/disableOverride");
+    final url = Uri.parse("http://10.146.90.63:8000/disableOverride");
     try {
       final response = await http.get(url, headers: {
         'Content-Type': 'application/json',
