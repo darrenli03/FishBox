@@ -3,6 +3,8 @@
 **/.dart_tool/
 **/.packages
 **/flutter_*.log
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
 
 # iOS specific
 ios/Pods/
