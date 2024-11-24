@@ -83,6 +83,8 @@ class _ComponentDecorationState extends State<ComponentDecoration> {
 }
 
 class BoxState extends StatefulWidget {
+  const BoxState({super.key});
+
   @override
   _BoxCurrentState createState() => _BoxCurrentState();
 }
@@ -113,11 +115,11 @@ class _BoxCurrentState extends State<BoxState> {
   // Function to clear the error message after 5 seconds
   void clearErrorMessage() {
     _errorTimer?.cancel(); // Cancel any existing timer
-    _errorTimer = Timer(Duration(seconds: 5), () {
+    _errorTimer = Timer(const Duration(seconds: 5), () {
       setState(() {
         errorMessageOpacity = 0.0;
       });
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         setState(() {
           errorMessage = '';
         });
@@ -298,14 +300,14 @@ class _BoxCurrentState extends State<BoxState> {
         children: [
           AnimatedOpacity(
             opacity: errorMessageOpacity,
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             child: Container(
               width: widthConstraint,
               padding: const EdgeInsets.all(8.0),
               color: Colors.redAccent,
               child: Text(
                 errorMessage,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ),
@@ -320,7 +322,7 @@ class _BoxCurrentState extends State<BoxState> {
             children: [
             ElevatedButton(
               onPressed: disableOverride,
-              child: Text('Disable Override'),
+              child: const Text('Disable Override'),
             ),
           ]),
 
@@ -329,11 +331,11 @@ class _BoxCurrentState extends State<BoxState> {
             children: [
               ElevatedButton(
                 onPressed: overrideDoorOpen,
-                child: Text('Open Door'),
+                child: const Text('Open Door'),
               ),
               ElevatedButton(
                 onPressed: overrideDoorClose,
-                child: Text('Close Door'),
+                child: const Text('Close Door'),
               ),
             ],
           ),

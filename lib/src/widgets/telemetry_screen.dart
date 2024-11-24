@@ -40,7 +40,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
       // );
     // });
 
-      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         // fetchDummyPumpMetrics(); // Fetch dummy pump metrics every 30 seconds
         fetchPumpMetrics();
         // fetchDummyFishData(dummyCheck); // Fetch dummy fish data every 30 seconds
@@ -158,7 +158,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -171,7 +171,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                       ),
                       ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: fishDataList.length,
                         itemBuilder: (context, index) {
                           FishData fish = fishDataList[index];
@@ -187,7 +187,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 8.0), // Add some spacing between the image and text
+                                const SizedBox(width: 8.0), // Add some spacing between the image and text
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

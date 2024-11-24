@@ -20,7 +20,7 @@ class MjpegStreamPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('FishBox Controls'),
+        title: const Text('FishBox Controls'),
         actions: [
           IconButton(
             icon: const Icon(Icons.assessment),
@@ -28,7 +28,7 @@ class MjpegStreamPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TelemetryScreen(), // Navigate to TelemetryScreen
+                  builder: (context) => const TelemetryScreen(), // Navigate to TelemetryScreen
                 ),
               );
             },
@@ -52,7 +52,7 @@ class MjpegStreamPage extends StatelessWidget {
           stream: streamUrl,
           isLive: true,
           error: (context, error, stackTrace) {
-            return Text('Error loading stream');
+            return const Text('Error loading stream');
           },
         ),
       ),
