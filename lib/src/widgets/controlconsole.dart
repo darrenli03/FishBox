@@ -90,36 +90,22 @@ class BoxState extends StatefulWidget {
 }
 
 class _BoxCurrentState extends State<BoxState> {
-  bool isPumpOn = false; // Track pump state
+  bool isManualOverrideOn = false; // Track manual override state
+  bool isBackPumpsOn = false; // Track back pumps state
+  bool isFrontPumpsOn = false; // Track front pumps state
   bool isDoorOpen = false; // Track door state
   String errorMessage = ''; // Track error message
   double errorMessageOpacity = 0.0;
   Timer? _errorTimer;
-  Timer? _timer;
-
-  String doorStateMessage = 'Unknown'; // Track door state message
-  
-  @override
-  void initState(){
-    super.initState();
-    fetchDoorState();
-    
-    setState(() {
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      fetchDoorState();
-      });
-      
-    });
-  }
 
   // Function to clear the error message after 5 seconds
   void clearErrorMessage() {
     _errorTimer?.cancel(); // Cancel any existing timer
-    _errorTimer = Timer(const Duration(seconds: 5), () {
+    _errorTimer = Timer(Duration(seconds: 5), () {
       setState(() {
         errorMessageOpacity = 0.0;
       });
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(Duration(milliseconds: 500), () {
         setState(() {
           errorMessage = '';
         });
@@ -127,161 +113,117 @@ class _BoxCurrentState extends State<BoxState> {
     });
   }
 
-  // Function to toggle pump state with a PUT request
-  // Future<void> togglePumpState() async {
-  //   //TODO: change to pump state url when implemented
-  //   final url = Uri.parse("http://10.42.0.1:8000/stream.mjpg");
-  //   final newState = isPumpOn ? "off" : "on";
-  //   final body = jsonEncode({"state": newState});
-
-  //   try {
-  //     final response = await http.put(url, body: body, headers: {
-  //       'Content-Type': 'application/json',
-  //     });
-
-  //     if (response.statusCode == 200) {
-  //       setState(() {
-  //         isPumpOn = !isPumpOn;
-  //         errorMessage = ''; // Clear error message on success
-  //         errorMessageOpacity = 0.0;
-  //       });
-  //     } else {
-  //       setState(() {
-  //         errorMessage = 'Failed to update pump state: ${response.reasonPhrase}';
-  //         errorMessageOpacity = 1.0;
-  //       });
-  //       clearErrorMessage(); // Clear the error message after 5 seconds
-  //     }
-  //   } catch (e) {
-  //     setState(() {
-  //       errorMessage = 'Failed to update pump state: $e';
-  //       errorMessageOpacity = 1.0;
-  //     });
-  //     clearErrorMessage(); // Clear the error message after 5 seconds
-  //   }
-  // }
-
-  // Function to fetch the current door state
-  Future<void> fetchDoorState() async {
+  // Function to toggle manual override state with a GET request
+  Future<void> toggleManualOverride() async {
+    // final url = Uri.parse("http://10.194.27.154:8000/manual_override?state=${isManualOverrideOn ? "off" : "on"}");
+    final url = Uri.parse("http://10.194.27.154:8000/toggle_manual_mode");
     try {
-      final response =
-          await http.get(Uri.parse('http://10.194.27.154:8000/get_status'));
-          // await http.get(Uri.parse('http://10.146.90.63:8000/get_status'));
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
         setState(() {
-          isDoorOpen = jsonResponse['isOpened'];
-          doorStateMessage = isDoorOpen ? 'Open' : 'Closed';
+          isManualOverrideOn = !isManualOverrideOn;
+          errorMessage = ''; // Clear error message on success
+          errorMessageOpacity = 0.0;
         });
       } else {
         setState(() {
-          errorMessage = 'Failed to fetch door state: ${response.reasonPhrase}';
+          errorMessage = 'Failed to update manual override state: ${response}';
           errorMessageOpacity = 1.0;
         });
         clearErrorMessage(); // Clear the error message after 5 seconds
       }
     } catch (e) {
       setState(() {
-        errorMessage = 'Failed to fetch door state: $e';
+        errorMessage = 'Failed to update manual override state: $e';
         errorMessageOpacity = 1.0;
       });
       clearErrorMessage(); // Clear the error message after 5 seconds
     }
   }
 
-  // Function to override door open state with a get request
-  Future<void> overrideDoorOpen() async {
-    final url = Uri.parse("http://10.194.27.154:8000/overrideOpen");
-    // final url = Uri.parse("http://10.146.90.63:8000/overrideOpen");
+  // Function to toggle back pumps state with a GET request
+  Future<void> toggleBackPumps() async {
+    // final url = Uri.parse("http://10.194.27.154:8000/back_pumps?state=${isBackPumpsOn ? "off" : "on"}");
+    final url = Uri.parse("http://10.194.27.154:8000/toggle_pump_1");
 
     try {
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-      });
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
         setState(() {
-          isDoorOpen = true;
-          doorStateMessage = 'Open';
+          isBackPumpsOn = !isBackPumpsOn;
           errorMessage = ''; // Clear error message on success
           errorMessageOpacity = 0.0;
         });
       } else {
         setState(() {
-          errorMessage =
-              'Failed to override door open: ${response.reasonPhrase}';
+          errorMessage = 'Failed to update back pumps state: ${response}';
           errorMessageOpacity = 1.0;
         });
         clearErrorMessage(); // Clear the error message after 5 seconds
       }
     } catch (e) {
       setState(() {
-        errorMessage = 'Failed to override door open: $e';
+        errorMessage = 'Failed to update back pumps state: $e';
         errorMessageOpacity = 1.0;
       });
       clearErrorMessage(); // Clear the error message after 5 seconds
     }
   }
 
-  // Function to override door close state with a get request
-  Future<void> overrideDoorClose() async {
-    final url = Uri.parse("http://10.194.27.154:8000/overrideClosed");
-    // final url = Uri.parse("http://10.146.90.63:8000/overrideClosed");
-
+  // Function to toggle front pumps state with a GET request
+  Future<void> toggleFrontPumps() async {
+    // final url = Uri.parse("http://10.194.27.154:8000/front_pumps?state=${isFrontPumpsOn ? "off" : "on"}");
+    final url = Uri.parse("http://10.194.27.154:8000/toggle_pump_2");
     try {
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-      });
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
         setState(() {
-          isDoorOpen = false;
-          doorStateMessage = 'Closed';
+          isFrontPumpsOn = !isFrontPumpsOn;
           errorMessage = ''; // Clear error message on success
           errorMessageOpacity = 0.0;
         });
       } else {
         setState(() {
-          errorMessage =
-              'Failed to override door close: ${response.reasonPhrase}';
+          errorMessage = 'Failed to update front pumps state: ${response}';
           errorMessageOpacity = 1.0;
         });
         clearErrorMessage(); // Clear the error message after 5 seconds
       }
     } catch (e) {
       setState(() {
-        errorMessage = 'Failed to override door close: $e';
+        errorMessage = 'Failed to update front pumps state: $e';
         errorMessageOpacity = 1.0;
       });
       clearErrorMessage(); // Clear the error message after 5 seconds
     }
   }
 
-  // Function to disable door override with a get request
-  Future<void> disableOverride() async {
-    final url = Uri.parse("http://10.194.27.154:8000/resetOverride");
-    // final url = Uri.parse("http://10.146.90.63:8000/resetOverride");
+  // Function to toggle door state with a GET request
+  Future<void> toggleDoor() async {
+    // final url = Uri.parse("http://10.194.27.154:8000/door?state=${isDoorOpen ? "close" : "open"}");
+    final url = Uri.parse("http://10.194.27.154:8000/toggle_door");
     try {
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-      });
+      final response = await http.get(url);
 
       if (response.statusCode == 200) {
         setState(() {
+          isDoorOpen = !isDoorOpen;
           errorMessage = ''; // Clear error message on success
           errorMessageOpacity = 0.0;
         });
       } else {
         setState(() {
-          errorMessage = 'Failed to disable override: ${response.reasonPhrase}';
+          errorMessage = 'Failed to update door state: ${response}';
           errorMessageOpacity = 1.0;
         });
         clearErrorMessage(); // Clear the error message after 5 seconds
       }
     } catch (e) {
       setState(() {
-        errorMessage = 'Failed to disable override: $e';
+        errorMessage = 'Failed to update door state: $e';
         errorMessageOpacity = 1.0;
       });
       clearErrorMessage(); // Clear the error message after 5 seconds
@@ -312,60 +254,46 @@ class _BoxCurrentState extends State<BoxState> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
-            children: [
-              Text('Current Door State: $doorStateMessage'),
-              ]
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
-            children: [
-            ElevatedButton(
-              onPressed: disableOverride,
-              child: const Text('Disable Override'),
-            ),
-          ]),
-
-          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(
-                onPressed: overrideDoorOpen,
-                child: const Text('Open Door'),
+              Column(
+                children: [
+                  Text('Manual Override'),
+                  Switch(
+                    value: isManualOverrideOn,
+                    onChanged: (value) => toggleManualOverride(),
+                  ),
+                ],
               ),
-              ElevatedButton(
-                onPressed: overrideDoorClose,
-                child: const Text('Close Door'),
+              Column(
+                children: [
+                  Text('Back Pumps'),
+                  Switch(
+                    value: isBackPumpsOn,
+                    onChanged: (value) => toggleBackPumps(),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text('Front Pumps'),
+                  Switch(
+                    value: isFrontPumpsOn,
+                    onChanged: (value) => toggleFrontPumps(),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text('Door'),
+                  Switch(
+                    value: isDoorOpen,
+                    onChanged: (value) => toggleDoor(),
+                  ),
+                ],
               ),
             ],
           ),
-          // Column(
-          //   children: [
-          //     const SizedBox(height: 4),
-          //     Tooltip(
-          //       message: isDoorOpen ? 'Close Door' : 'Open Door',
-          //       child: SwitchListTile(
-          //         title: Text(isDoorOpen ? "Door Open" : "Door Closed"),
-          //         value: isDoorOpen,
-          //         onChanged: (value) => toggleDoorState(),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // Commented out pump controls
-          // Column(
-          //   children: [
-          //     const SizedBox(height: 4),
-          //     Tooltip(
-          //       message: isPumpOn ? 'Turn off Pump' : 'Turn on Pump',
-          //       child: SwitchListTile(
-          //         title: Text(isPumpOn ? "Pump On" : "Pump Off"),
-          //         value: isPumpOn,
-          //         onChanged: (value) => togglePumpState(),
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );

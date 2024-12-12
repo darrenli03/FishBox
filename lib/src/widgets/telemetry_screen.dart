@@ -40,7 +40,7 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
       // );
     // });
 
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
         // fetchDummyPumpMetrics(); // Fetch dummy pump metrics every 30 seconds
         fetchPumpMetrics();
         // fetchDummyFishData(dummyCheck); // Fetch dummy fish data every 30 seconds
@@ -122,6 +122,8 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
       } else {
         print('Failed to load fish data: ${response.statusCode}');
       }
+
+      print(mostRecentFishId);
     } catch (e) {
       print('Failed to load fish data: $e');
     }

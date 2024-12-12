@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
             body: Column(
               children: [
                 Expanded(child: MjpegStreamPage(settingsController: settingsController)), 
-                BoxState(), // Add OpenDoorButton widget here
+                const BoxState(), // Add OpenDoorButton widget here
               ],
             ),
             // body: MjpegStreamPage(settingsController: settingsController) // Replace the Column widget with the mjpegStreamPage function

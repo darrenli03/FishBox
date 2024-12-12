@@ -7,9 +7,9 @@ import 'telemetry_screen.dart';
 
 class MjpegStreamPage extends StatelessWidget {
   const MjpegStreamPage({
-    Key? key,
+    super.key,
     required this.settingsController,
-  }) : super(key: key);
+  });
 
   final SettingsController settingsController;
 
